@@ -1,53 +1,38 @@
-import React from "react";
+import React,{useState} from "react";
 import Modal from "react-bootstrap/Modal";
-import ModalBody from "react-bootstrap/ModalBody";
-import ModalHeader from "react-bootstrap/ModalHeader";
-import ModalFooter from "react-bootstrap/ModalFooter";
-import ModalTitle from "react-bootstrap/ModalTitle";
+import Button from "react-bootstrap/Button"
 
-export function Modale() {
-    console.log("model");
+
+function ModalItem(props) {
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   return (
-    <Modal show={true}>
-    <ModalHeader>
-      <ModalTitle>Hi</ModalTitle>
-    </ModalHeader>
-    <ModalBody>asdfasdf</ModalBody>
-    <ModalFooter>This is the footer</ModalFooter>
-  </Modal>
+    <>
+      <Button variant="danger" onClick={handleShow}>
+        Del
+      </Button>
 
-    // <div  className="modal"  show={true}>
-    //   <div className="modal-dialog">
-    //     <div className="modal-content">
-    //       <div className="modal-header">
-    //         <h5 className="modal-title">Modal title</h5>
-    //         <button
-    //           type="button"
-    //           className="close"
-    //           data-dismiss="modal"
-    //           aria-label="Close"
-    //         >
-    //           <span aria-hidden="true">&times;</span>
-    //         </button>
-    //       </div>
-    //       <div className="modal-body">
-    //         <p>Modal body text goes here.</p>
-    //       </div>
-    //       <div className="modal-footer">
-    //         <button
-    //           type="button"
-    //           className="btn btn-secondary"
-    //           data-dismiss="modal"
-    //         >
-    //           Close
-    //         </button>
-    //         <button type="button" className="btn btn-primary">
-    //           Save changes
-    //         </button>
-    //       </div>
-    //     </div>
-    //   </div>
-    // </div>
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Delete Confirmation</Modal.Title>
+        </Modal.Header>
+  <Modal.Body>Do you want to delete {props.employee.name} ?</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={() => props.onDelete(props.employee)}>
+            Delete
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
   );
 }
+
+export default ModalItem;
+
 

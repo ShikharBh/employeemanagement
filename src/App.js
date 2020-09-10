@@ -1,43 +1,38 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
+import { Route, Switch, withRouter } from "react-router-dom";
 import Home from "./components/homePage/homePage";
 import Navbar from "./components/navbar/navbar";
+import Add from "./components/addEmployee/addEmployee";
 import { getEmployees } from "./services/fakeEmployeeService";
-// import {Modal} from './components/modal/modal'
 
-class App extends Component {
-  constructor() {
-    super();
-    this.state = { employees: getEmployees() };
-  }
+function App() {
+  const [employees, setemployee] = useState(getEmployees());
 
-  // getConfirmation = (employee) => {
-   
-  // };
-
-  handleDelete = (employee) => {
-    //alert('Do you want to delete the record?');
-    const result = window.confirm("want to delete?");
-    if (result) {
-      const employees = this.state.employees.filter(
-        (e) => e._id !== employee._id
-      );
-      this.setState({ employees });
-    }
+  const handleDelete = (employee) => {
+    const employe = employees.filter((e) => e._id !== employee._id);
+    setemployee(employe);
   };
 
-  render() {
-    return (
-      <div className="container-fluid">
-        <Navbar />
-        <Home
-          onDelete={this.handleDelete}
-          employees={this.state.employees}
-          getConfirmation={this.getConfirmation}
-        />
+  useEffect( () => console.log('Refresh'));
+
+
+  return (
+    <div className="container-fluid">
+      <Navbar />
+      <div>
+        <Switch>
+          <Route
+            path="/"
+            render={(props) => (
+              <Home onDelete={handleDelete} employees={employees} {...props}/>
+            )}
+          />
+          <Route path="/Add" component={Add} />
+        </Switch>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
-export default App;
+export default withRouter(App);

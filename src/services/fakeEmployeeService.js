@@ -4,7 +4,7 @@ const employees = [
     name: "Shikhar",
     position: { _id: "5b21ca3eeb7f6fbccd471818", name: "Consultant" },
     phoneNumber: 9741717356,
-    Email: "jainshikhar4@gmailcom",
+    Email: "shikhar@gmailcom",
   },
   {
     _id: "5b21ca3eeb7f6fbccd471813",

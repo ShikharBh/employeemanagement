@@ -1,5 +1,5 @@
-import React, { Component, useState } from "react";
-import {Modale} from '../modal/modal';
+import React from "react";
+import ModalItem from "../modal/modal";
 
 function Home(props) {
   if (props.employees.length === 0) {
@@ -14,9 +14,9 @@ function Home(props) {
             <th>Name</th>
             <th>Designation</th>
             <th>Email</th>
-            <th>Moblie</th>
-            <th></th>
-            <th></th>
+            <th>Phone</th>
+            <th>Actions</th>
+            
           </tr>
         </thead>
         <tbody>
@@ -27,17 +27,11 @@ function Home(props) {
               <td>{employee.Email}</td>
               <td>{employee.phoneNumber}</td>
               <td>
-                <button
-                  onClick={Modale}
-                  className="btn btn-danger btn-sm m-2"
-                >
-                  Delete
-                </button>
-              </td>
-              <td>
+                <ModalItem onDelete={props.onDelete} employee={employee} />
+              
                 <button
                   onClick={() => this.handleEdit(employee)}
-                  className="btn btn-danger btn-sm m-2"
+                  className="btn btn-primary m-2"
                 >
                   Edit
                 </button>
