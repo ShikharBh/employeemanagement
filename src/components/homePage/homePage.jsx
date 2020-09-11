@@ -52,7 +52,7 @@ function Home() {
                 <ModalItem
                   onDelete={handleDelete}
                   employee={employee}
-                  action={"Delete"}
+                  action="Delete"
                 />
 
                 <button

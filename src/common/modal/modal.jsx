@@ -4,7 +4,7 @@ import Button from "react-bootstrap/Button";
 
 function ModalItem(props) {
   const [show, setShow] = useState(false);
-  const {action, onDelete} = props;
+  const { action, onDelete, employee } = props;
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -20,16 +20,13 @@ function ModalItem(props) {
           <Modal.Title>{action} confirmation</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {action} {props.employee.name} ?
+          {action} {employee.name} ?
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Cancel
           </Button>
-          <Button
-            variant="primary"
-            onClick={() =>onDelete(props.employee)}
-          >
+          <Button variant="primary" onClick={() => onDelete(employee)}>
             {action}
           </Button>
         </Modal.Footer>
