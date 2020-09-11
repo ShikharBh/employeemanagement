@@ -5,16 +5,14 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import "bootstrap/dist/css/bootstrap.css";
 import "font-awesome/css/font-awesome.css";
-import { BrowserRouter, withRouter} from 'react-router-dom';
+import { BrowserRouter } from "react-router-dom";
 
-const WithRouterApp = withRouter(App);
+// const WithRouterApp = withRouter(App);
 
 ReactDOM.render(
-  <React.StrictMode>
-    <BrowserRouter>
-    <WithRouterApp />
-    </BrowserRouter>
-  </React.StrictMode>,
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>,
   document.getElementById("root")
 );
 

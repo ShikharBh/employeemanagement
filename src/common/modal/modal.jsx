@@ -4,7 +4,7 @@ import Button from "react-bootstrap/Button";
 
 function ModalItem(props) {
   const [show, setShow] = useState(false);
-  const action = props.action;
+  const {action, onDelete} = props;
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -28,7 +28,7 @@ function ModalItem(props) {
           </Button>
           <Button
             variant="primary"
-            onClick={() => props.onDelete(props.employee)}
+            onClick={() =>onDelete(props.employee)}
           >
             {action}
           </Button>

@@ -24,6 +24,10 @@ function Home() {
   }
 
   const employees = Paginate(allEmployees, currentPage, pageSize);
+  if(employees.length === 0){
+    setcurrentPage(currentPage-1)
+  }
+  
   return (
     <React.Fragment>
       <p>Total records : {count}</p>
