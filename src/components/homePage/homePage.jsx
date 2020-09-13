@@ -1,12 +1,17 @@
 import React, { useState } from "react";
-import ModalItem from "../../common/modal/modal";
 import Pagination from "./../../common/pagination/pagination";
 import { getEmployees } from "..//../services/fakeEmployeeService";
 import Paginate from "./../../ultis/paginate";
+import EmployeesTable from "./../employeesTable/employeesTable";
+import _ from "lodash";
 
 function Home() {
   const [allEmployees, setallEmployee] = useState(getEmployees());
   const [currentPage, setcurrentPage] = useState(1);
+  const [sortColumn, setsortColumn] = useState({
+    column: "name",
+    order: "asc",
+  });
   const pageSize = 4;
   const { length: count } = allEmployees;
 
@@ -19,53 +24,34 @@ function Home() {
     setallEmployee(updatedEmployees);
   };
 
+  const handleSort = (sort) => {
+    setsortColumn(sort);
+  };
+
   if (count === 0) {
     return <p>No records</p>;
   }
 
-  const employees = Paginate(allEmployees, currentPage, pageSize);
-  if(employees.length === 0){
-    setcurrentPage(currentPage-1)
+  const sortEmployee = _.orderBy(
+    allEmployees,
+    [sortColumn.column],
+    [sortColumn.order]
+  );
+
+  const employees = Paginate(sortEmployee, currentPage, pageSize);
+  if (employees.length === 0) {
+    setcurrentPage(currentPage - 1);
   }
-  
+
   return (
     <React.Fragment>
       <p>Total records : {count}</p>
-      <table className="table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Designation</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {employees.map((employee) => (
-            <tr key={employee._id}>
-              <td>{employee.name}</td>
-              <td>{employee.position.name}</td>
-              <td>{employee.Email}</td>
-              <td>{employee.phoneNumber}</td>
-              <td>
-                <ModalItem
-                  onDelete={handleDelete}
-                  employee={employee}
-                  action="Delete"
-                />
-
-                <button
-                  onClick={() => this.handleEdit(employee)}
-                  className="btn btn-primary m-2"
-                >
-                  Edit
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <EmployeesTable
+        employees={employees}
+        sortColumn={sortColumn}
+        onDelete={handleDelete}
+        onSort={handleSort}
+      />
       <Pagination
         itemsCount={count}
         pageSize={pageSize}
