@@ -2,7 +2,7 @@ import React from "react";
 import ModalItem from "../../common/modal/modal";
 
 const EmployeesTable = (props) => {
-  const { employees, onDelete, onEdit, onSort, sortColumn } = props;
+  const { employees, onDelete, onSort, sortColumn } = props;
 
   const raiseSort = (column) => {
     const sort = { ...sortColumn };
@@ -36,7 +36,7 @@ const EmployeesTable = (props) => {
           </th>
           <th>Email</th>
           <th>Phone</th>
-          <th>Actions</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>
@@ -52,13 +52,6 @@ const EmployeesTable = (props) => {
                 employee={employee}
                 action="Delete"
               />
-
-              <button
-                onClick={() => onEdit(employee)}
-                className="btn btn-primary m-2"
-              >
-                Edit
-              </button>
             </td>
           </tr>
         ))}
