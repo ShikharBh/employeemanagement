@@ -10,7 +10,7 @@ function App() {
 
   return (
     <div className="container-fluid">
-      <Navbar />
+      <Navbar  />
       <div>
         <Switch>
           <Route path="/Add" component={Add} />

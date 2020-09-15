@@ -31,8 +31,11 @@ const EmployeesTable = (props) => {
           <th className="clickable" onClick={() => raiseSort("name")}>
             Name{renderSortIcon("name")}
           </th>
-          <th className="clickable" onClick={() => raiseSort("position.name")}>
-            Designation{renderSortIcon("position.name")}
+          <th
+            className="clickable"
+            onClick={() => raiseSort("designation.name")}
+          >
+            Designation{renderSortIcon("designation.name")}
           </th>
           <th>Email</th>
           <th>Phone</th>
@@ -43,8 +46,8 @@ const EmployeesTable = (props) => {
         {employees.map((employee) => (
           <tr key={employee._id}>
             <td>{employee.name}</td>
-            <td>{employee.position.name}</td>
-            <td>{employee.Email}</td>
+            <td>{employee.designation.name}</td>
+            <td>{employee.email}</td>
             <td>{employee.phoneNumber}</td>
             <td>
               <ModalItem
