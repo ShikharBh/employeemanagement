@@ -1,5 +1,6 @@
 import React from "react";
 import ModalItem from "../../common/modal/modal";
+import { Link } from "react-router-dom";
 
 const EmployeesTable = (props) => {
   const { employees, onDelete, onSort, sortColumn } = props;
@@ -33,9 +34,9 @@ const EmployeesTable = (props) => {
           </th>
           <th
             className="clickable"
-            onClick={() => raiseSort("designation.name")}
+            onClick={() => raiseSort("designation")}
           >
-            Designation{renderSortIcon("designation.name")}
+            Designation{renderSortIcon("designation")}
           </th>
           <th>Email</th>
           <th>Phone</th>
@@ -46,7 +47,7 @@ const EmployeesTable = (props) => {
         {employees.map((employee) => (
           <tr key={employee._id}>
             <td>{employee.name}</td>
-            <td>{employee.designation.name}</td>
+            <td>{employee.designation}</td>
             <td>{employee.email}</td>
             <td>{employee.phoneNumber}</td>
             <td>
@@ -55,6 +56,9 @@ const EmployeesTable = (props) => {
                 employee={employee}
                 action="Delete"
               />
+              <Link className="btn btn-primary m-2" to={"/employee/" + employee._id}>
+                Edit
+              </Link>
             </td>
           </tr>
         ))}

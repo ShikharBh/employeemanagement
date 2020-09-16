@@ -1,67 +1,59 @@
-import * as designationAPI from "./fakeDesignationService";
-
 const employees = [
   {
     _id: "5b21ca3eeb7f6fbccd471815",
     name: "Shikhar",
-    designation: { _id: "5b21ca3eeb7f6fbccd471818", name: "Consultant" },
+    designation: "Consultant",
     phoneNumber: 9741717356,
-    email: "shikhar@gmailcom",
+    email: "shikhar@gmail.com",
   },
   {
     _id: "5b21ca3eeb7f6fbccd471813",
     name: "Agam",
-    designation: { _id: "5b21ca3eeb7f6fbccd471818", name: "Consultant" },
+    designation: "Consultant",
     phoneNumber: 9741717000,
-    email: "agam@gmailcom",
+    email: "agam@gmail.com",
   },
   {
     _id: "5b21ca3eeb7f6fbccd471812",
     name: "Shilpa",
-    designation: { _id: "5b21ca3eeb7f6fbccd471818", name: "Consultant" },
+    designation: "Consultant",
     phoneNumber: 9741717111,
-    email: "shilpa@gmailcom",
+    email: "shilpa@gmail.com",
   },
   {
     _id: "5b21ca3eeb7f6fbccd471814",
     name: "Srinath",
-    designation: { _id: "5b21ca3eeb7f6fbccd471811", name: "Senior Consultant" },
+    designation: "Senior Consultant",
     phoneNumber: 9741717222,
-    email: "srinath@gmailcom",
+    email: "srinath@gmail.com",
   },
   {
     _id: "5b21ca3eeb7f6fbccd471816",
     name: "Sujith",
-    designation: {
-      _id: "5b21ca3eeb7f6fbccd471810",
-      name: "Consultant Manager",
-    },
+    designation: "Consultant Manager",
     phoneNumber: 9741717333,
-    email: "sujith@gmailcom",
+    email: "sujith@gmail.com",
   },
   {
     _id: "5b21ca3eeb7f6fbccd471817",
     name: "Ravi",
-    designation: {
-      _id: "5b21ca3eeb7f6fbccd471810",
-      name: "Consultant Manager",
-    },
+    designation: "Consultant Manager",
     phoneNumber: 9741717444,
-    email: "ravi@gmailcom",
+    email: "ravi@gmail.com",
   },
   {
     _id: "5b21ca3eeb7f6fbccd471818",
     name: "Abhi",
-    designation: { _id: "5b21ca3eeb7f6fbccd471811", name: "Senior Consultant" },
+    designation: "Senior Consultant",
     phoneNumber: 9741717555,
-    email: "abhi@gmailcom",
+    email: "abhi@gmail.com",
   },
   {
     _id: "5b21ca3eeb7f6fbccd471820",
     name: "Ramesh",
-    designation: { _id: "5b21ca3eeb7f6fbccd471811", name: "Senior Consultant" },
+    designation: "Senior Consultant",
     phoneNumber: 9741717777,
-    email: "ramesh@gmailcom",
+    email: "ramesh@gmail.com",
   },
 ];
 
@@ -76,14 +68,12 @@ export function getEmployee(id) {
 export function saveEmployee(employee) {
   let employeeInDb = employees.find((m) => m._id === employee._id) || {};
   employeeInDb.name = employee.name;
-  employeeInDb.designation = designationAPI.designation.find(
-    (g) => g.name === employee.designation.name
-  );
+  employeeInDb.designation = employee.designation;
   employeeInDb.email = employee.email;
   employeeInDb.phoneNumber = employee.phoneNumber;
 
   if (!employeeInDb._id) {
-    employeeInDb._id = Date.now();
+    employeeInDb._id = Date.now().toString();
     employees.push(employeeInDb);
   }
 

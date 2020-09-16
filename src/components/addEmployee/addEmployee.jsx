@@ -1,17 +1,54 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { saveEmployee } from "./../../services/fakeEmployeeService";
+import {
+  saveEmployee,
+  getEmployee,
+} from "./../../services/fakeEmployeeService";
 
-export default function App(props) {
-  const { register, handleSubmit, errors } = useForm();
-  const onSubmit = (data) => {
-    saveEmployee(data);
+export default function EmployeeForm(props) {
+  const [data, setdata] = useState({
+    _id: "",
+    name: "",
+    designation: "",
+    phoneNumber: 0,
+    email: "",
+  });
+  const { register, handleSubmit, errors, setValue } = useForm();
+
+  useEffect(() => {
+    const employeeId = props.match.params.id;
+    if (employeeId === "new") return;
+
+    const employee = getEmployee(employeeId);
+
+    employeeData(employee);
+
+    // if (!employee) return props.history.replace("/not-found");
+  });
+  const employeeData = (employee) => {
+    setValue("name", employee.name);
+    setValue("designation", employee.designation);
+    setValue("phoneNumber", employee.phoneNumber);
+    setValue("email", employee.email);
+    setdata(employee);
+  };
+
+  const onSubmit = (newData) => {
+    const finalData = {
+      _id: data._id,
+      name: newData.name[0].toUpperCase() + newData.name.slice(1),
+      designation: newData.designation,
+      phoneNumber: newData.phoneNumber,
+      email: newData.email,
+    };
+
+    saveEmployee(finalData);
+
     props.history.push("/");
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <h3>Add Employee</h3>
       <label htmlFor="name" className="row">
         FullName:
       </label>
@@ -26,7 +63,7 @@ export default function App(props) {
         Designation:
       </label>
       <select
-        name="designation.name"
+        name="designation"
         id="designation"
         ref={register({ required: "This is required" })}
       >
