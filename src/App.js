@@ -3,7 +3,7 @@ import "./App.css";
 import { Route, Switch } from "react-router-dom";
 import Home from "./components/homePage/homePage";
 import Navbar from "./components/navbar/navbar";
-import EmployeeForm from "./components/addEmployee/addEmployee";
+import EmployeeForm from "./components/employeeForm/employeeForm";
 
 function App() {
   // useEffect(() => console.log("Refresh"));

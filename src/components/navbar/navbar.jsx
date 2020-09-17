@@ -22,9 +22,7 @@ class Navbar extends Component {
             <NavLink className="nav-item nav-link" to="/">
               Home{" "}
             </NavLink>
-            <NavLink className="nav-item nav-link" to="/employee/new">
-              Add{" "}
-            </NavLink>
+            
           </div>
         </div>
       </nav>

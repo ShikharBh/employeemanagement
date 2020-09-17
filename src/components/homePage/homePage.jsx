@@ -4,16 +4,19 @@ import { getEmployees } from "..//../services/fakeEmployeeService";
 import Paginate from "./../../ultis/paginate";
 import EmployeesTable from "./../employeesTable/employeesTable";
 import _ from "lodash";
+import { Link } from "react-router-dom";
+import SearchBox from "./../../common/searchBox/searchBox";
 
 function Home() {
   const [allEmployees, setallEmployee] = useState(getEmployees());
+  const [searchQuery, setsearchQuery] = useState("");
   const [currentPage, setcurrentPage] = useState(1);
   const [sortColumn, setsortColumn] = useState({
     column: "name",
     order: "asc",
   });
   const pageSize = 4;
-  const { length: count } = allEmployees;
+  // const { length: count } = allEmployees;
 
   const handlePageChange = (page) => {
     setcurrentPage(page);
@@ -28,12 +31,26 @@ function Home() {
     setsortColumn(sort);
   };
 
-  if (count === 0) {
+  const handleSearch = (query) => {
+    setsearchQuery(query);
+  };
+
+  const filtered = searchQuery
+    ? allEmployees.filter(
+        (e) =>
+          e.name.toLowerCase().startsWith(searchQuery.toLowerCase()) ||
+          e.designation.toLowerCase().startsWith(searchQuery.toLowerCase()) ||
+          e.email.toLowerCase().startsWith(searchQuery.toLowerCase()) ||
+          e.phoneNumber.toString().startsWith(searchQuery)
+      )
+    : allEmployees;
+
+  if (filtered.length === 0) {
     return <p>No records</p>;
   }
 
   const sortEmployee = _.orderBy(
-    allEmployees,
+    filtered,
     [sortColumn.column],
     [sortColumn.order]
   );
@@ -45,15 +62,20 @@ function Home() {
 
   return (
     <React.Fragment>
-      <p>Total records : {count}</p>
-      <EmployeesTable
+      <Link className="btn btn-primary btn-md m-2 " to="/employee/new">
+        Add Employee
+      </Link>
+      <p>Count:{filtered.length}</p>
+      <SearchBox value={searchQuery} onChange={handleSearch} />
+      {filtered.length === 0?<p>No records</p>: <EmployeesTable
         employees={employees}
         sortColumn={sortColumn}
         onDelete={handleDelete}
         onSort={handleSort}
-      />
+      />}
+      
       <Pagination
-        itemsCount={count}
+        itemsCount={filtered.length}
         pageSize={pageSize}
         onPageChange={handlePageChange}
         currentPage={currentPage}

@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import {
-  saveEmployee,
-  getEmployee,
-} from "./../../services/fakeEmployeeService";
+import { saveEmployee, getEmployee } from "../../services/fakeEmployeeService";
 
 export default function EmployeeForm(props) {
   const [data, setdata] = useState({

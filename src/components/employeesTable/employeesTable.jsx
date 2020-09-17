@@ -40,7 +40,7 @@ const EmployeesTable = (props) => {
           </th>
           <th>Email</th>
           <th>Phone</th>
-          <th>Action</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
