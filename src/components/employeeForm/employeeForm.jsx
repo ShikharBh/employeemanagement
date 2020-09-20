@@ -1,47 +1,58 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { saveEmployee, getEmployee } from "../../services/fakeEmployeeService";
+import axios from "axios";
+import "./employeeForm.css";
 
 export default function EmployeeForm(props) {
   const [data, setdata] = useState({
-    _id: "",
+    id: Date.now().toString(),
     name: "",
     designation: "",
     phoneNumber: 0,
     email: "",
   });
-  const { register, handleSubmit, errors, setValue } = useForm();
+  const baseUrl = "https://localhost:5001/Shifts";
+
+  const { register, handleSubmit, errors, reset } = useForm();
+  
 
   useEffect(() => {
     const employeeId = props.match.params.id;
     if (employeeId === "new") return;
 
-    const employee = getEmployee(employeeId);
-
-    employeeData(employee);
-
-    // if (!employee) return props.history.replace("/not-found");
-  });
-  const employeeData = (employee) => {
-    setValue("name", employee.name);
-    setValue("designation", employee.designation);
-    setValue("phoneNumber", employee.phoneNumber);
-    setValue("email", employee.email);
-    setdata(employee);
-  };
-
-  const onSubmit = (newData) => {
-    const finalData = {
-      _id: data._id,
-      name: newData.name[0].toUpperCase() + newData.name.slice(1),
-      designation: newData.designation,
-      phoneNumber: newData.phoneNumber,
-      email: newData.email,
+    const employeeData = (employee) => {
+      reset({
+        name: employee.name,
+        designation: employee.designation,
+        phoneNumber: employee.phoneNumber,
+        email: employee.email,
+      });
+      setdata(employee);
     };
 
-    saveEmployee(finalData);
+    axios.get(`https://localhost:5001/Shifts/${employeeId}`).then((response) => {
+      employeeData(response.data);
+    });
+  }, [props.match.params,setdata,reset]);
 
-    props.history.push("/");
+  const onSubmit = (resultData) => {
+    const result = window.confirm("are you sure?");
+    if (result) {
+      const finalData = {
+        id: data.id,
+        name: resultData.name[0].toUpperCase() + resultData.name.slice(1),
+        designation: resultData.designation,
+        phoneNumber: parseInt(resultData.phoneNumber),
+        email: resultData.email,
+      };
+      if (data.name === "") {
+        axios.post(baseUrl, finalData);
+      } else {
+        axios.put(baseUrl, finalData);
+      }
+
+      props.history.push("/");
+    }
   };
 
   return (
@@ -88,6 +99,7 @@ export default function EmployeeForm(props) {
       <input
         name="phoneNumber"
         id="phone"
+        type="number"
         ref={register({ required: true, pattern: /^[6-9]{1}\d{9}$/i })}
       />
       {errors.phone?.type === "required" && "This is required"}

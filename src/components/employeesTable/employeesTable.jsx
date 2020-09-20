@@ -32,10 +32,7 @@ const EmployeesTable = (props) => {
           <th className="clickable" onClick={() => raiseSort("name")}>
             Name{renderSortIcon("name")}
           </th>
-          <th
-            className="clickable"
-            onClick={() => raiseSort("designation")}
-          >
+          <th className="clickable" onClick={() => raiseSort("designation")}>
             Designation{renderSortIcon("designation")}
           </th>
           <th>Email</th>
@@ -45,7 +42,7 @@ const EmployeesTable = (props) => {
       </thead>
       <tbody>
         {employees.map((employee) => (
-          <tr key={employee._id}>
+          <tr key={employee.id}>
             <td>{employee.name}</td>
             <td>{employee.designation}</td>
             <td>{employee.email}</td>
@@ -56,7 +53,10 @@ const EmployeesTable = (props) => {
                 employee={employee}
                 action="Delete"
               />
-              <Link className="btn btn-primary m-2" to={"/employee/" + employee._id}>
+              <Link
+                className="btn btn-primary m-2"
+                to={"/employee/" + employee.id}
+              >
                 Edit
               </Link>
             </td>

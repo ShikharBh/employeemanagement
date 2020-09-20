@@ -6,7 +6,10 @@ function ModalItem(props) {
   const [show, setShow] = useState(false);
   const { action, onDelete, employee } = props;
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false);
+    onDelete(employee)
+  };
   const handleShow = () => setShow(true);
 
   return (
@@ -26,7 +29,7 @@ function ModalItem(props) {
           <Button variant="secondary" onClick={handleClose}>
             Cancel
           </Button>
-          <Button variant="primary" onClick={() => onDelete(employee)}>
+          <Button variant="primary" onClick={handleClose}>
             {action}
           </Button>
         </Modal.Footer>

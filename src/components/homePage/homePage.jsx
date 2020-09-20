@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Pagination from "./../../common/pagination/pagination";
-import { getEmployees } from "..//../services/fakeEmployeeService";
 import Paginate from "./../../ultis/paginate";
 import EmployeesTable from "./../employeesTable/employeesTable";
 import _ from "lodash";
 import { Link } from "react-router-dom";
 import SearchBox from "./../../common/searchBox/searchBox";
+import axios from "axios";
 
 function Home() {
-  const [allEmployees, setallEmployee] = useState(getEmployees());
+  const [allEmployees, setallEmployee] = useState([]);
   const [searchQuery, setsearchQuery] = useState("");
   const [currentPage, setcurrentPage] = useState(1);
   const [sortColumn, setsortColumn] = useState({
@@ -16,19 +16,26 @@ function Home() {
     order: "asc",
   });
   const pageSize = 4;
+  const baseUrl ="https://localhost:5001/Shifts";
   // const { length: count } = allEmployees;
+
+  useEffect(() => {
+    axios
+      .get(baseUrl)
+      .then((response) => setallEmployee(response.data));
+  }, [setallEmployee]);
 
   const handlePageChange = (page) => {
     setcurrentPage(page);
   };
 
   const handleDelete = (employee) => {
-    const updatedEmployees = allEmployees.filter((e) => e._id !== employee._id);
-    setallEmployee(updatedEmployees);
+    axios.delete(`${baseUrl}/${employee.id}`);
   };
 
   const handleSort = (sort) => {
     setsortColumn(sort);
+    setcurrentPage(1);
   };
 
   const handleSearch = (query) => {
@@ -65,15 +72,21 @@ function Home() {
       <Link className="btn btn-primary btn-md m-2 " to="/employee/new">
         Add Employee
       </Link>
-      <p>Count:{filtered.length}</p>
-      <SearchBox value={searchQuery} onChange={handleSearch} />
-      {filtered.length === 0?<p>No records</p>: <EmployeesTable
+
+      <div className="row">
+        <p className="col-1 m-2">Count:{filtered.length}</p>
+        <div className="col justify-content-center ">
+          <SearchBox value={searchQuery} onChange={handleSearch} />
+        </div>
+      </div>
+
+      <EmployeesTable
         employees={employees}
         sortColumn={sortColumn}
         onDelete={handleDelete}
         onSort={handleSort}
-      />}
-      
+      />
+
       <Pagination
         itemsCount={filtered.length}
         pageSize={pageSize}
