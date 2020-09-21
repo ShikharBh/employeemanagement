@@ -102,8 +102,8 @@ export default function EmployeeForm(props) {
         type="number"
         ref={register({ required: true, pattern: /^[6-9]{1}\d{9}$/i })}
       />
-      {errors.phone?.type === "required" && "This is required"}
-      {errors.phone?.type === "pattern" && "Enter valid Indian number"}
+      {errors.phoneNumber?.type === "required" && "This is required"}
+      {errors.phoneNumber?.type === "pattern" && "Enter valid Indian number"}
       <input className="row m-2" type="submit" />
     </form>
   );
