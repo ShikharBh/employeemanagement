@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import axios from "axios";
 import "./employeeForm.css";
+import {
+  getEmployeeById,
+  editEmployee,
+  addEmployee,
+} from "../../services/services";
 
 export default function EmployeeForm(props) {
   const [data, setdata] = useState({
@@ -11,10 +15,8 @@ export default function EmployeeForm(props) {
     phoneNumber: 0,
     email: "",
   });
-  const baseUrl = "https://localhost:5001/Shifts";
 
   const { register, handleSubmit, errors, reset } = useForm();
-  
 
   useEffect(() => {
     const employeeId = props.match.params.id;
@@ -30,15 +32,17 @@ export default function EmployeeForm(props) {
       setdata(employee);
     };
 
-    axios.get(`https://localhost:5001/Shifts/${employeeId}`).then((response) => {
+    async function fetchData() {
+      const response = await getEmployeeById(employeeId);
       employeeData(response.data);
-    });
-  }, [props.match.params,setdata,reset]);
+    }
+    fetchData();
+  }, [props.match.params, setdata, reset, props.location.query]);
 
   const onSubmit = (resultData) => {
     const result = window.confirm("are you sure?");
     if (result) {
-      const finalData = {
+      const employeeData = {
         id: data.id,
         name: resultData.name[0].toUpperCase() + resultData.name.slice(1),
         designation: resultData.designation,
@@ -46,9 +50,9 @@ export default function EmployeeForm(props) {
         email: resultData.email,
       };
       if (data.name === "") {
-        axios.post(baseUrl, finalData);
+        addEmployee(employeeData);
       } else {
-        axios.put(baseUrl, finalData);
+        editEmployee(employeeData);
       }
 
       props.history.push("/");

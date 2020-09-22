@@ -55,7 +55,7 @@ const EmployeesTable = (props) => {
               />
               <Link
                 className="btn btn-primary m-2"
-                to={"/employee/" + employee.id}
+                to={`/employee/${employee.id}`}
               >
                 Edit
               </Link>

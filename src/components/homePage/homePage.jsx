@@ -5,7 +5,9 @@ import EmployeesTable from "./../employeesTable/employeesTable";
 import _ from "lodash";
 import { Link } from "react-router-dom";
 import SearchBox from "./../../common/searchBox/searchBox";
-import axios from "axios";
+import "./homePage.css";
+
+import { getEmployees, deleteEmployee } from "./../../services/services";
 
 function Home() {
   const [allEmployees, setallEmployee] = useState([]);
@@ -16,22 +18,26 @@ function Home() {
     order: "asc",
   });
   const pageSize = 4;
-  const baseUrl = "https://localhost:5001/Shifts";
+
   // const { length: count } = allEmployees;
 
-  const getEmployees = () => {
-    axios.get(baseUrl).then((response) => setallEmployee(response.data));
-  };
-
-  useEffect(() => getEmployees(), []);
+  useEffect(() => {
+    async function fetchData() {
+      const response = await getEmployees();
+      console.log(response.data);
+      setallEmployee(response.data);
+    }
+    fetchData();
+  }, []);
 
   const handlePageChange = (page) => {
     setcurrentPage(page);
   };
 
   const handleDelete = async (employee) => {
-    await axios.delete(`${baseUrl}/${employee.id}`);
-    getEmployees();
+    await deleteEmployee(employee);
+    const response = await getEmployees();
+    setallEmployee(response.data);
   };
 
   const handleSort = (sort) => {
@@ -43,55 +49,73 @@ function Home() {
     setsearchQuery(query);
   };
 
-  const filtered =
-    searchQuery && allEmployees
-      ? allEmployees.filter(
-          (e) =>
-            e.name.toLowerCase().startsWith(searchQuery.toLowerCase()) ||
-            e.designation.toLowerCase().startsWith(searchQuery.toLowerCase()) ||
-            e.email.toLowerCase().startsWith(searchQuery.toLowerCase()) ||
-            e.phoneNumber.toString().startsWith(searchQuery)
-        )
-      : allEmployees;
+  const getPagedData = () => {
+    const filtered =
+      searchQuery && allEmployees
+        ? allEmployees.filter(
+            (e) =>
+              e.name.toLowerCase().startsWith(searchQuery.toLowerCase()) ||
+              e.designation
+                .toLowerCase()
+                .startsWith(searchQuery.toLowerCase()) ||
+              e.email.toLowerCase().startsWith(searchQuery.toLowerCase()) ||
+              e.phoneNumber.toString().startsWith(searchQuery)
+          )
+        : allEmployees;
 
-  const sortEmployee =
-    filtered.length === 0
-      ? {}
-      : _.orderBy(filtered, [sortColumn.column], [sortColumn.order]);
+    const sortEmployee =
+      filtered.length === 0
+        ? {}
+        : _.orderBy(filtered, [sortColumn.column], [sortColumn.order]);
 
-  const employees =
-    filtered.length === 0 ? {} : Paginate(sortEmployee, currentPage, pageSize);
-  if (employees.length === 0) {
-    setcurrentPage(currentPage - 1);
-  }
+    const employees =
+      filtered.length === 0
+        ? {}
+        : Paginate(sortEmployee, currentPage, pageSize);
+    if (employees.length === 0) {
+      setcurrentPage(currentPage - 1);
+    }
+    return { totalcount: filtered.length, data: employees };
+  };
 
   return (
     <React.Fragment>
-      <div className="row">
-        <div className="col-2 align-items-center">
-          <Link className="btn btn-primary btn-md m-2 " to="/employee/new">
+      <div className="flexbox-container">
+        <div className="flexbox-item flexbox-item-1">
+          <Link
+            className="btn btn-primary btn-md m-2 add-btn "
+            to="/employee/new"
+          >
             Add Employee
           </Link>
-        </div>
-        <div className="col">
-          <span>Showing {filtered.length} records from the database</span>
+          <span className="count">
+            Showing {getPagedData().totalcount} records from the database
+          </span>
 
-          <div className=" container ">
-            <SearchBox value={searchQuery} onChange={handleSearch} />
-          </div>
-          {filtered.length === 0 ? (
+          <SearchBox
+            className="searchbar"
+            value={searchQuery}
+            onChange={handleSearch}
+          />
+        </div>
+        {/* <div className="flexbox-item flexbox-item-2">
+          
+        </div> */}
+        <div className="flexbox-item flexbox-item-3">
+          {getPagedData().totalcount === 0 ? (
             <p>No records</p>
           ) : (
             <EmployeesTable
-              employees={employees}
+              employees={getPagedData().data}
               sortColumn={sortColumn}
               onDelete={handleDelete}
               onSort={handleSort}
             />
           )}
-
+        </div>
+        <div className="flexbox-item flexbox-item-4">
           <Pagination
-            itemsCount={filtered.length}
+            itemsCount={getPagedData().totalcount}
             pageSize={pageSize}
             onPageChange={handlePageChange}
             currentPage={currentPage}
