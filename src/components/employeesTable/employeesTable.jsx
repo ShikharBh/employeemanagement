@@ -1,8 +1,9 @@
 import React from "react";
-import ModalItem from "../../common/modal/modal";
+import ModalItem from "../../modals/deleteModal";
 import { Link } from "react-router-dom";
+import "./employeeTable.css";
 
-const EmployeesTable = (props) => {
+function EmployeesTable(props) {
   const { employees, onDelete, onSort, sortColumn } = props;
 
   const raiseSort = (column) => {
@@ -30,10 +31,10 @@ const EmployeesTable = (props) => {
       <thead>
         <tr>
           <th className="clickable" onClick={() => raiseSort("name")}>
-            Name{renderSortIcon("name")}
+            Name {renderSortIcon("name")}
           </th>
           <th className="clickable" onClick={() => raiseSort("designation")}>
-            Designation{renderSortIcon("designation")}
+            Designation {renderSortIcon("designation")}
           </th>
           <th>Email</th>
           <th>Phone</th>
@@ -48,11 +49,7 @@ const EmployeesTable = (props) => {
             <td>{employee.email}</td>
             <td>{employee.phoneNumber}</td>
             <td>
-              <ModalItem
-                onDelete={onDelete}
-                employee={employee}
-                action="Delete"
-              />
+              <ModalItem onDelete={onDelete} employee={employee} />
               <Link
                 className="btn btn-primary m-2"
                 to={`/employee/${employee.id}`}
@@ -65,6 +62,6 @@ const EmployeesTable = (props) => {
       </tbody>
     </table>
   );
-};
+}
 
 export default EmployeesTable;

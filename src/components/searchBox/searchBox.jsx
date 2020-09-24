@@ -6,9 +6,9 @@ const SearchBox = ({ value, onChange }) => {
       type="text"
       name="query"
       className="form-control my-2 "
-      style={{ width: "38.5rem",marginLeft:"100px" }}
       placeholder="search..."
       value={value}
+      style={{backgroundColor: "rgba(100, 148, 237, 0.219)"}}
       onChange={(e) => onChange(e.currentTarget.value)}
     />
   );

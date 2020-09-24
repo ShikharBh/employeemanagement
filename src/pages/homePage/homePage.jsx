@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
-import Pagination from "./../../common/pagination/pagination";
-import Paginate from "./../../ultis/paginate";
-import EmployeesTable from "./../employeesTable/employeesTable";
+import Pagination from "../../components/pagination/pagination";
+import Paginate from "../../transformers/paginate";
+import EmployeesTable from "../../components/employeesTable/employeesTable";
 import _ from "lodash";
 import { Link } from "react-router-dom";
-import SearchBox from "./../../common/searchBox/searchBox";
+import SearchBox from "../../components/searchBox/searchBox";
 import "./homePage.css";
 
-import { getEmployees, deleteEmployee } from "./../../services/services";
+import { getEmployees, deleteEmployee } from "../../services/services";
 
-function Home() {
+function Home(props) {
   const [allEmployees, setallEmployee] = useState([]);
   const [searchQuery, setsearchQuery] = useState("");
   const [currentPage, setcurrentPage] = useState(1);
@@ -24,11 +24,10 @@ function Home() {
   useEffect(() => {
     async function fetchData() {
       const response = await getEmployees();
-      console.log(response.data);
       setallEmployee(response.data);
     }
     fetchData();
-  }, []);
+  }, [props]);
 
   const handlePageChange = (page) => {
     setcurrentPage(page);
@@ -75,35 +74,38 @@ function Home() {
     if (employees.length === 0) {
       setcurrentPage(currentPage - 1);
     }
+
     return { totalcount: filtered.length, data: employees };
   };
 
   return (
     <React.Fragment>
       <div className="flexbox-container">
-        <div className="flexbox-item flexbox-item-1">
-          <Link
-            className="btn btn-primary btn-md m-2 add-btn "
-            to="/employee/new"
-          >
-            Add Employee
-          </Link>
-          <span className="count">
-            Showing {getPagedData().totalcount} records from the database
-          </span>
+        <div className="flexbox-item-1">
+          <div className="flex-addbtn">
+            <Link
+              className="btn btn-primary btn-md add-btn "
+              to="/employee/new"
+            >
+              Add Employee
+            </Link>
+          </div>
 
-          <SearchBox
-            className="searchbar"
-            value={searchQuery}
-            onChange={handleSearch}
-          />
+          <div className="flex-searchbox">
+            <span className="count">
+              Showing {getPagedData().totalcount} records from the database
+            </span>
+            <SearchBox
+              className="searchbar"
+              value={searchQuery}
+              onChange={handleSearch}
+            />
+          </div>
         </div>
-        {/* <div className="flexbox-item flexbox-item-2">
-          
-        </div> */}
-        <div className="flexbox-item flexbox-item-3">
+
+        <div className="flexbox-item-2">
           {getPagedData().totalcount === 0 ? (
-            <p>No records</p>
+            <p>No matching records</p>
           ) : (
             <EmployeesTable
               employees={getPagedData().data}
@@ -113,7 +115,7 @@ function Home() {
             />
           )}
         </div>
-        <div className="flexbox-item flexbox-item-4">
+        <div className="flexbox-item-3">
           <Pagination
             itemsCount={getPagedData().totalcount}
             pageSize={pageSize}

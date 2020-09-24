@@ -29,6 +29,7 @@ export default function EmployeeForm(props) {
         phoneNumber: employee.phoneNumber,
         email: employee.email,
       });
+      console.log(employee);
       setdata(employee);
     };
 
@@ -50,65 +51,72 @@ export default function EmployeeForm(props) {
         email: resultData.email,
       };
       if (data.name === "") {
-        addEmployee(employeeData);
+        addEmployee(employeeData).then(() => {
+          props.history.push("/");
+        });
       } else {
-        editEmployee(employeeData);
+        editEmployee(employeeData).then(() => {
+          props.history.push("/");
+        });
       }
-
-      props.history.push("/");
     }
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <label htmlFor="name" className="row">
-        FullName:
-      </label>
-      <input
-        name="name"
-        id="name"
-        ref={register({ required: true, maxLength: 30 })}
-      />
-      {errors.name?.type === "required" && "This is required"}
-      {errors.name?.type === "maxLength" && "Your input exceed maxLength"}
-      <label htmlFor="designation" className="row">
-        Designation:
-      </label>
-      <select
-        name="designation"
-        id="designation"
-        ref={register({ required: "This is required" })}
-      >
-        <option value="Consultant">Consultant</option>
-        <option value="Senior Consultant">Senior consultant</option>
-        <option value="Consultant Manager">Consultant Manager</option>
-      </select>
-      {errors.designation?.message}
-      <label htmlFor="email" className="row">
-        Email:
-      </label>
-      <input
-        name="email"
-        id="email"
-        ref={register({
-          required: true,
-          pattern: /^([a-zA-Z0-9_\-.]+)@([a-zA-Z0-9_\-.]+)\.([a-zA-Z]{2,5})$/i,
-        })}
-      />
-      {errors.email?.type === "required" && "This is required"}
-      {errors.email?.type === "pattern" && "Enter valid email"}
-      <label htmlFor="phone" className="row">
-        Phone:
-      </label>
-      <input
-        name="phoneNumber"
-        id="phone"
-        type="number"
-        ref={register({ required: true, pattern: /^[6-9]{1}\d{9}$/i })}
-      />
-      {errors.phoneNumber?.type === "required" && "This is required"}
-      {errors.phoneNumber?.type === "pattern" && "Enter valid Indian number"}
-      <input className="row m-2" type="submit" />
+    <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
+      <div className="flex-item">
+        <label htmlFor="name">Full Name :</label>
+        <input
+          name="name"
+          id="name"
+          ref={register({ required: true, maxLength: 25 })}
+        />
+        {errors.name?.type === "required" && "This is required"}
+        {errors.name?.type === "maxLength" && "Your input exceed maxLength"}
+      </div>
+      <div className="flex-item">
+        {" "}
+        <label htmlFor="designation">Designation :</label>
+        <select
+          name="designation"
+          id="designation"
+          ref={register({ required: "This is required" })}
+        >
+          <option value="NA">NA</option>
+          <option value="Consultant">Consultant</option>
+          <option value="Senior Consultant">Senior consultant</option>
+          <option value="Consultant Manager">Consultant Manager</option>
+        </select>
+        {errors.designation?.message}
+      </div>
+      <div className="flex-item">
+        <label htmlFor="email">Email :</label>
+        <input
+          name="email"
+          id="email"
+          ref={register({
+            required: true,
+            maxLength: 30,
+            pattern: /^([a-zA-Z0-9_\-.]+)@([a-zA-Z0-9_\-.]+)\.([a-zA-Z]{2,5})$/i,
+          })}
+        />
+        {errors.email?.type === "required" && "This is required"}
+        {errors.email?.type === "pattern" && "Enter valid email"}
+        {errors.email?.type === "maxLength" && "Your input exceed maxLength"}
+      </div>
+      <div className="flex-item">
+        <label htmlFor="phone">Phone :</label>
+        <input
+          name="phoneNumber"
+          id="phone"
+          type="number"
+          ref={register({ required: true, pattern: /^[6-9]{1}\d{9}$/i })}
+        />
+        {errors.phoneNumber?.type === "required" && "This is required"}
+        {errors.phoneNumber?.type === "pattern" && "Enter valid Indian number"}
+      </div>
+
+      <input className="btn btn-primary submit-button" type="submit" />
     </form>
   );
 }

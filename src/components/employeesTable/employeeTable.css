@@ -1,0 +1,16 @@
+table,
+thead,
+tbody {
+  font-family: cursive;
+}
+
+thead {
+  background-color: #97aac2;
+  width: 100%;
+}
+
+th,
+td {
+  width: 20%;
+  font-family: cursive;
+}

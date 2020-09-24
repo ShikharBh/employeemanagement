@@ -3,3 +3,43 @@ input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+
+form {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  align-items: center;
+}
+.flex-item {
+  display: flex;
+  margin: 20px;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+input {
+  align-self: center;
+  width: 500px;
+  background-color: rgba(100, 148, 237, 0.219);
+  height: 35px;
+  font-family: cursive !important;
+}
+
+select {
+  align-self: center;
+  width: 500px;
+  background-color: rgba(100, 148, 237, 0.219);
+  height: 35px;
+  font-family: cursive !important;
+}
+
+label {
+  align-self: start;
+  width: 100px;
+
+  font-family: cursive !important;
+}
+
+.submit-button {
+  width: 200px;
+  height: 40px;
+}

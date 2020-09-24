@@ -4,7 +4,7 @@ import Button from "react-bootstrap/Button";
 
 function ModalItem(props) {
   const [show, setShow] = useState(false);
-  const {action, onDelete, employee} = props;
+  const { onDelete, employee } = props;
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -12,25 +12,16 @@ function ModalItem(props) {
   return (
     <React.Fragment>
       <Button variant="danger" onClick={handleShow}>
-        {action}
+        Delete
       </Button>
-
       <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>{action} confirmation</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {action} {employee.name} ?
-        </Modal.Body>
+        <Modal.Body>Do you want to delete {employee.name} ?</Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Cancel
           </Button>
-          <Button
-            variant="primary"
-            onClick={() =>onDelete(employee)}
-          >
-            {action}
+          <Button variant="primary" onClick={() => onDelete(employee)}>
+            Delete
           </Button>
         </Modal.Footer>
       </Modal>
